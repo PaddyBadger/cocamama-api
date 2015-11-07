@@ -5,13 +5,14 @@ gem 'rails', '4.2.4'
 
 # Use sqlite3 as the database for Active Record
 group :development do
-  gem 'sqlite3'
+	gem 'sqlite3'
 end
 
 group :test do
 	gem 'rspec-rails', '~> 3.0'
 	gem 'factory_girl_rails'
 	gem 'ffaker'
+	gem 'shoulda-matchers'
 end
 
 # Use SCSS for stylesheets
@@ -32,7 +33,10 @@ gem 'jquery-rails'
 #Api gems
 gem 'active_model_serializers'
 
+gem 'devise'
+gem 'pg'
+
 group :doc do
-  # bundle exec rake doc:rails generates the API under doc/api.
-  gem 'sdoc', require: false
+	# bundle exec rake doc:rails generates the API under doc/api.
+	gem 'sdoc', require: false
 end
