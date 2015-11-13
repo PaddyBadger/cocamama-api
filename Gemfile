@@ -16,7 +16,7 @@ group :test do
 end
 
 # Use SCSS for stylesheets
-gem 'sass-rails', '~> 4.0.0'
+gem 'sass-rails'
 
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
@@ -35,6 +35,12 @@ gem 'active_model_serializers'
 
 gem 'devise'
 gem 'pg'
+
+gem 'sabisu_rails', github: "IcaliaLabs/sabisu-rails"
+gem 'furatto', github: "IcaliaLabs/furatto-rails"
+gem 'compass-rails', '~> 2.0.4'
+gem 'font-awesome-rails'
+gem 'simple_form'
 
 group :doc do
 	# bundle exec rake doc:rails generates the API under doc/api.
