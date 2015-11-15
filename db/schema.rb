@@ -11,10 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151114233036) do
+ActiveRecord::Schema.define(version: 20151115162154) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "step_templates", force: :cascade do |t|
+    t.string   "title",       default: ""
+    t.string   "description", default: ""
+    t.integer  "category",    default: 0
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
 
   create_table "steps", force: :cascade do |t|
     t.string   "title",       default: ""
@@ -23,6 +31,11 @@ ActiveRecord::Schema.define(version: 20151114233036) do
     t.integer  "user_id"
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
+    t.datetime "start_at"
+    t.datetime "end_at"
+    t.integer  "category",    default: 0
+    t.integer  "frequency",   default: 0
+    t.integer  "count",       default: 0
   end
 
   add_index "steps", ["user_id"], name: "index_steps_on_user_id", using: :btree
@@ -41,6 +54,7 @@ ActiveRecord::Schema.define(version: 20151114233036) do
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
     t.string   "auth_token",             default: ""
+    t.string   "name",                   default: ""
   end
 
   add_index "users", ["auth_token"], name: "index_users_on_auth_token", unique: true, using: :btree

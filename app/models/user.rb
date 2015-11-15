@@ -1,8 +1,7 @@
 class User < ActiveRecord::Base
 	validates :auth_token, uniqueness: true
 
-	devise :database_authenticatable, :registerable,
-	     :recoverable, :rememberable, :trackable, :validatable
+	devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable
 
 	before_create :generate_authentication_token!
 	has_many :steps, dependent: :destroy

@@ -7,7 +7,8 @@ class Api::V1::StepsController < ApplicationController
   	end
 
   	def index
-    	respond_with Step.all  
+    	steps = params[:step_ids].present? ? Step.find(params[:step_ids]) : Step.all
+    	respond_with steps
   	end
 
 	def create

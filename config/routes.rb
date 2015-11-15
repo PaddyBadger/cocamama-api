@@ -13,6 +13,7 @@ Rails.application.routes.draw do
 
                 resources :sessions, only: [:create, :destroy]
                 resources :steps, only: [:show, :index]
-        end
+                resources :step_templates, :only => [:index, :show]
+            end
     end
 end
