@@ -9,6 +9,7 @@ RSpec.describe User, type: :model do
 	it { should respond_to(:password) }
 	it { should respond_to(:password_confirmation) }
 	it { should respond_to(:auth_token) }
+	it { should have_many(:steps) }
 
 	it { should be_valid }
 
@@ -30,5 +31,21 @@ RSpec.describe User, type: :model do
 			@user.generate_authentication_token!
 			expect(@user.auth_token).not_to eql existing_user.auth_token
 		end
+	end
+
+	describe "#steps association" do
+
+	    before do
+	      	@user.save
+	      	3.times { FactoryGirl.create :step, user: @user }
+	    end
+
+	    it "destroys the associated steps on self destruct" do
+	      	steps = @user.steps
+	      	@user.destroy
+	      	steps.each do |step|
+	        	expect(Step.find(step)).to raise_error ActiveRecord::RecordNotFound
+	      	end
+	    end
 	end
 end
