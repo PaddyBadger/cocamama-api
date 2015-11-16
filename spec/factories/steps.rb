@@ -8,5 +8,4 @@ FactoryGirl.define do
 	count 10
  	user
   end
-
 end

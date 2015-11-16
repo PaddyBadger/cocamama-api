@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-Rspec.describe Step do
+RSpec.describe Step do
   let(:step) { FactoryGirl.build :step }
   subject { step }
 

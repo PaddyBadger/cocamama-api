@@ -1,3 +1,3 @@
 class StepTemplateSerializer < ActiveModel::Serializer
-  attributes :id, :description, :category
+  	attributes :id, :title, :description, :category
 end
