@@ -1,11 +1,8 @@
 FactoryGirl.define do
   factory :step do
-    title "My Step"
-	description "My Step"
-	published false
-	category 1
-	frequency 1
-	count 10
- 	user
+    day "2015-11-15 18:32:52"
+	completed false
+	participation_tracker
   end
+
 end

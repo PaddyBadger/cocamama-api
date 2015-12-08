@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :step_template do
+  factory :goal_template do
     title "MyString"
 	description "MyString"
 	category 1

@@ -1,6 +1,6 @@
-class AddCategoriesAndDatesToStep < ActiveRecord::Migration
+class AddCategoriesAndDatesToGoal < ActiveRecord::Migration
   	def change
-  		change_table :steps do |t|
+  		change_table :goals do |t|
       		t.datetime :start_at
       		t.datetime :end_at
       		t.string :category

@@ -1,6 +1,6 @@
-class CreateStepTemplates < ActiveRecord::Migration
+class CreateGoalTemplates < ActiveRecord::Migration
   def change
-    create_table :step_templates do |t|
+    create_table :goal_templates do |t|
       t.string :title, default: ""
       t.string :description, default: ""
       t.integer :category, default: 0

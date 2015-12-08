@@ -38,6 +38,6 @@ class Api::V1::StepsController < ApplicationController
 	private
 
 	def step_params
-		params.require(:step).permit(:title, :description, :published)
+		params.require(:step).permit(:participation_tracker_id, :completed)
 	end
 end

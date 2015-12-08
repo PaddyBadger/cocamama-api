@@ -11,31 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151115233252) do
+ActiveRecord::Schema.define(version: 20151206003245) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "hstore"
 
-  create_table "challenges", force: :cascade do |t|
-    t.integer  "winner_id"
-    t.integer  "step_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  add_index "challenges", ["step_id"], name: "index_challenges_on_step_id", using: :btree
-
-  create_table "participation_trackers", force: :cascade do |t|
-    t.integer  "user_id"
-    t.integer  "challenge_id"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
-  end
-
-  add_index "participation_trackers", ["challenge_id"], name: "index_participation_trackers_on_challenge_id", using: :btree
-
-  create_table "step_templates", force: :cascade do |t|
+  create_table "goal_templates", force: :cascade do |t|
     t.string   "title",       default: ""
     t.string   "description", default: ""
     t.integer  "category",    default: 0
@@ -43,7 +24,7 @@ ActiveRecord::Schema.define(version: 20151115233252) do
     t.datetime "updated_at",               null: false
   end
 
-  create_table "steps", force: :cascade do |t|
+  create_table "goals", force: :cascade do |t|
     t.string   "title",       default: ""
     t.string   "description", default: ""
     t.boolean  "published",   default: false
@@ -57,9 +38,18 @@ ActiveRecord::Schema.define(version: 20151115233252) do
     t.integer  "count",       default: 0
   end
 
-  add_index "steps", ["user_id"], name: "index_steps_on_user_id", using: :btree
+  add_index "goals", ["user_id"], name: "index_goals_on_user_id", using: :btree
 
-  create_table "tracks", force: :cascade do |t|
+  create_table "participation_trackers", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "goal_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "participation_trackers", ["goal_id"], name: "index_participation_trackers_on_goal_id", using: :btree
+
+  create_table "steps", force: :cascade do |t|
     t.datetime "day"
     t.boolean  "completed"
     t.integer  "participation_tracker_id"
@@ -67,7 +57,7 @@ ActiveRecord::Schema.define(version: 20151115233252) do
     t.datetime "updated_at",               null: false
   end
 
-  add_index "tracks", ["participation_tracker_id"], name: "index_tracks_on_participation_tracker_id", using: :btree
+  add_index "steps", ["participation_tracker_id"], name: "index_steps_on_participation_tracker_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false

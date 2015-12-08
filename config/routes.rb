@@ -8,17 +8,15 @@ Rails.application.routes.draw do
         scope module: :v1,
             constraints: ApiConstraints.new(version: 1, default: true) do
                 resources :users, only: [:show, :create, :update, :destroy] 
-                resources :steps, only: [:create, :update, :destroy] 
-                resources :challenges, only: [:create, :update, :destroy] 
+                resources :goals, only: [:create, :update, :destroy] 
                 resources :participation_trackers, only: [:update, :create, :destroy] 
-                resources :tracks, only: [:update, :create, :destroy]
+                resources :steps, only: [:update, :create, :destroy]
                 
                 resources :sessions, only: [:create, :destroy]
-                resources :steps, only: [:show, :index]
-                resources :challenges, only: [:show, :index] 
+                resources :goals, only: [:show, :index]
                 resources :participation_trackers, only: [:show, :index] 
-                resources :tracks, only: [:show, :index]
-                resources :step_templates, :only => [:index, :show]
+                resources :steps, only: [:show, :index]
+                resources :goal_templates, :only => [:index, :show]
             end
     end
 end

@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-RSpec.describe StepTemplate do
-  let(:step_template) { FactoryGirl.build :step_template }
+RSpec.describe GoalTemplate do
+  let(:goal_template) { FactoryGirl.build :goal_template }
 
-  subject { step_template }
+  subject { goal_template }
 
   it { should respond_to(:title) }
   it { should respond_to(:description) }

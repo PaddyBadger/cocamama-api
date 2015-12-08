@@ -16,7 +16,7 @@ class Api::V1::ParticipationTrackersController < ApplicationController
 		if participation_tracker.save
 			render json: participation_tracker, status: 201, location: [:api, participation_tracker]
 		else
-			render json: { errors: step.errors }, status: 422
+			render json: { errors: participation_tracker.errors }, status: 422
 		end
 	end
 

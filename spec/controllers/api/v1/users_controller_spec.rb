@@ -8,13 +8,13 @@ RSpec.describe Api::V1::UsersController do
     	end
 
     	it "returns the information about a reporter on a hash" do
-      		user_response = json_response[:user]
-      		expect(user_response[:email]).to eql @user.email
+      		user_response = json_response
+      		expect(user_response[:user][:email]).to eql @user.email
     	end
 
-    	it "has the step ids as an embeded object" do
+    	it "has the goal ids as an embeded object" do
       		user_response = json_response[:user]
-      		expect(user_response[:step_ids]).to eql []
+      		expect(user_response[:goal_ids]).to eql []
     	end
 
     	it { should respond_with 200 }
@@ -29,8 +29,8 @@ RSpec.describe Api::V1::UsersController do
 	      	end
 
 	      	it "renders the json representation for the user record just created" do
-	        	user_response = json_response[:user]
-	        	expect(user_response[:email]).to eql @user_attributes[:email]
+	        	user_response = json_response
+	        	expect(user_response[:user][:email]).to eql @user_attributes[:email]
 	      	end
 
 	      	it { should respond_with 201 }
@@ -50,7 +50,7 @@ RSpec.describe Api::V1::UsersController do
 	        	expect(user_response).to have_key(:errors)
 	      	end
 
-	      	it "renders the json errors on whye the user could not be created" do
+	      	it "renders the json errors on why the user could not be created" do
 	        	user_response = json_response
 	        	expect(user_response[:errors][:email]).to include "can't be blank"
 	      	end
@@ -88,7 +88,7 @@ RSpec.describe Api::V1::UsersController do
         		expect(user_response).to have_key(:errors)
       		end
 
-      		it "renders the json errors on whye the user could not be created" do
+      		it "renders the json errors on why the user could not be created" do
         		user_response = json_response
         		expect(user_response[:errors][:email]).to include "is invalid"
       		end

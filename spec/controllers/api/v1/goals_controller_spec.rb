@@ -1,15 +1,16 @@
 require 'spec_helper'
 
-describe Api::V1::ParticipationTrackersController do
-	describe "GET #show" do
+RSpec.describe Api::V1::GoalsController do
+
+  	describe "GET #show" do
     	before(:each) do 
-      		@participation_tracker = FactoryGirl.create :participation_tracker
-      		get :show, id: @participation_tracker.id
+      		@goal = FactoryGirl.create :goal
+      		get :show, id: @goal.id
     	end
 
-    	it "returns the information about a pt on a hash" do
-      		pt_response = json_response
-      		expect(pt_response[:user]).to eql @participation_tracker.user
+    	it "returns the information about a goal on a hash" do
+      		goal_response = json_response
+      		expect(goal_response[:title]).to eql @goal.title
     	end
 
     	it { should respond_with 200 }
@@ -17,27 +18,27 @@ describe Api::V1::ParticipationTrackersController do
 
   	describe "GET #index" do
     	before(:each) do
-      		4.times { FactoryGirl.create :participation_tracker } 
+      		4.times { FactoryGirl.create :goal } 
     	end
 
-    	context "when is not receiving any pt_ids parameter" do
+    	context "when is not receiving any goal_ids parameter" do
       		before(:each) do
         		get :index
       		end
 
       		it "returns 4 records from the database" do
-        		pts_response = json_response
-        		expect(pts_response[:participation_trackers]).to have(4).items
+        		goals_response = json_response
+        		expect(goals_response[:goals]).to have(4).items
       		end
 
       		it { should respond_with 200 }
     	end
 
-    	context "when pt_ids parameter is sent" do
+    	context "when goal_ids parameter is sent" do
       		before(:each) do
-        		@goal = FactoryGirl.create :goal
-        		3.times { FactoryGirl.create :participation_tracker, goal: @goal }
-        		get :index, participation_tracker_ids: @goal.participation_tracker_ids
+        		@user = FactoryGirl.create :user
+        		3.times { FactoryGirl.create :goal, user: @user }
+        		get :index, goal_ids: @user.goal_ids
       		end
     	end
   	end
@@ -45,23 +46,18 @@ describe Api::V1::ParticipationTrackersController do
   	describe ".filter_by_title" do
 	    before(:each) do
 	      @goal1 = FactoryGirl.create :goal, title: "Saving Animals"
-	      @pt1 = FactoryGirl.create :participation_tracker, goal: @goal1
-	      @pt2 = FactoryGirl.create :participation_tracker, goal: @goal1
-	      @pt3 = FactoryGirl.create :participation_tracker, goal: @goal1
-
 	      @goal2 = FactoryGirl.create :goal, title: "Gym Visits"
-	      @pt4 = FactoryGirl.create :participation_tracker, goal: @goal2
-	      @pt5 = FactoryGirl.create :participation_tracker, goal: @goal2
-	      @pt6 = FactoryGirl.create :participation_tracker, goal: @goal2
+	      @goal3 = FactoryGirl.create :goal, title: "No Alcohol"
+	      @goal4 = FactoryGirl.create :goal, title: "Saving money"
 	    end
 
     	context "when a 'Saving' title pattern is sent" do
-      		it "returns the 3 pts for goal matching" do
-        		expect(ParticipationTracker.filter_by_goal("Saving")).to have(3).items
+      		it "returns the 2 goals matching" do
+        		expect(Goal.filter_by_title("Saving")).to have(2).items
       		end
 
-      		it "returns the 3 pts for goal matching" do
-        		expect(ParticipationTracker.filter_by_goal("Saving").sort).to match_array([@pt1, @pt2, @pt3])
+      		it "returns the goals matching" do
+        		expect(Goal.filter_by_title("Saving").sort).to match_array([@goal1, @goal4])
       		end
     	end
   	end
@@ -69,18 +65,15 @@ describe Api::V1::ParticipationTrackersController do
   	describe "POST #create" do
     	context "when is successfully created" do
       		before(:each) do
-        		@goal = FactoryGirl.create :goal, user: user
-
         		user = FactoryGirl.create :user
+        		@goal_attributes = FactoryGirl.attributes_for :goal
         		api_authorization_header user.auth_token 
-        		@pt1_attributes = FactoryGirl.attributes_for :participation_tracker
-
-        		post :create, { goal: @goal, user_id: user.id, participation_tracker: @pt1_attributes}
+        		post :create, { user_id: user.id, goal: @goal_attributes }
       		end
 
       		it "renders the json representation for the goal record just created" do
-        		goal_response = json_response[:participation_tracker]
-        		expect(goal_response[:user_id]).to eql @pt1_attributes[:user_id]
+        		goal_response = json_response[:goal]
+        		expect(goal_response[:title]).to eql @goal_attributes[:title]
       		end
 
       		it { should respond_with 201 }

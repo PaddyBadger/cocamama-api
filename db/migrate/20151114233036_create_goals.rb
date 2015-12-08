@@ -1,6 +1,6 @@
-class CreateSteps < ActiveRecord::Migration
+class CreateGoals < ActiveRecord::Migration
   def change
-    create_table :steps do |t|
+    create_table :goals do |t|
       t.string :title, default: ""
       t.string :description, default: ""
       t.boolean :published, default: false
@@ -8,6 +8,6 @@ class CreateSteps < ActiveRecord::Migration
 
       t.timestamps null: false
     end
-    add_index :steps, :user_id
+    add_index :goals, :user_id
   end
 end

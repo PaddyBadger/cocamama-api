@@ -9,7 +9,7 @@ RSpec.describe User, type: :model do
 	it { should respond_to(:password) }
 	it { should respond_to(:password_confirmation) }
 	it { should respond_to(:auth_token) }
-	it { should have_many(:steps) }
+	it { should have_many(:goals) }
 
 	it { should be_valid }
 
@@ -37,14 +37,14 @@ RSpec.describe User, type: :model do
 
 	    before do
 	      	@user.save
-	      	3.times { FactoryGirl.create :step, user: @user }
+	      	3.times { FactoryGirl.create :goal, user: @user }
 	    end
 
 	    it "destroys the associated steps on self destruct" do
-	      	steps = @user.steps
+	      	goals = @user.goals
 	      	@user.destroy
-	      	steps.each do |step|
-	        	expect(Step.find(step)).to raise_error ActiveRecord::RecordNotFound
+	      	goals.each do |goal|
+	        	expect(Goal.find(goal)).to raise_error ActiveRecord::RecordNotFound
 	      	end
 	    end
 	end

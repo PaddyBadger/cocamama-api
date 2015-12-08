@@ -4,10 +4,9 @@ class User < ActiveRecord::Base
 	devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable
 
 	before_create :generate_authentication_token!
-	has_many :steps
-	has_many :challenges, through: :steps
-	has_many :participation_trackers, through: :challenges
-	has_many :tracks, through: :participation_trackers
+	has_many :goals, dependent: :destroy
+	has_many :participation_trackers, through: :goals
+	has_many :steps, through: :participation_trackers
 
 	def generate_authentication_token!	
 		begin

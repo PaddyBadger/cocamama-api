@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-RSpec.describe Step do
-  let(:step) { FactoryGirl.build :step }
-  subject { step }
+RSpec.describe Goal do
+  let(:goal) { FactoryGirl.build :goal }
+  subject { goal }
 
   it { should belong_to :user }
   it { should respond_to(:title) }

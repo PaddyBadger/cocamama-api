@@ -1,6 +1,7 @@
 class ParticipationTracker < ActiveRecord::Base
-	validates :challenge_id, presence: true
+	validates :goal_id, presence: true
 
-	belongs_to :challenge
-	has_many :tracks, dependent: :destroy
+	belongs_to :goal
+	has_one :user
+	has_many :steps, dependent: :destroy
 end
