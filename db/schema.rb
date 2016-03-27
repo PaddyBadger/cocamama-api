@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151206003245) do
+ActiveRecord::Schema.define(version: 20160217125349) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,25 +20,35 @@ ActiveRecord::Schema.define(version: 20151206003245) do
     t.string   "title",       default: ""
     t.string   "description", default: ""
     t.integer  "category",    default: 0
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.boolean  "published",   default: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.string   "icon"
   end
 
   create_table "goals", force: :cascade do |t|
     t.string   "title",       default: ""
     t.string   "description", default: ""
-    t.boolean  "published",   default: false
     t.integer  "user_id"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
     t.datetime "start_at"
     t.datetime "end_at"
     t.integer  "category",    default: 0
     t.integer  "frequency",   default: 0
     t.integer  "count",       default: 0
+    t.string   "type"
+    t.string   "icon"
   end
 
   add_index "goals", ["user_id"], name: "index_goals_on_user_id", using: :btree
+
+  create_table "icons", force: :cascade do |t|
+    t.string   "name",       default: ""
+    t.string   "keywords",   default: ""
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
 
   create_table "participation_trackers", force: :cascade do |t|
     t.integer  "user_id"

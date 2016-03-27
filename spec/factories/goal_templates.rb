@@ -3,6 +3,8 @@ FactoryGirl.define do
     title "MyString"
 	description "MyString"
 	category 1
+	published false
+	icon "carrot"
   end
 
 end

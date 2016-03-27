@@ -9,6 +9,7 @@ RSpec.describe Api::V1::GoalTemplatesController do
 
 		it "returns 4 goal_templates" do
 			goal_templates_response = json_response[:goal_templates]
+			binding.pry
 			expect(goal_templates_response).to have(4).items
 		end
 

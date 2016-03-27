@@ -33,7 +33,7 @@ RSpec.describe User, type: :model do
 		end
 	end
 
-	describe "#steps association" do
+	describe "#goals association" do
 
 	    before do
 	      	@user.save

@@ -38,6 +38,6 @@ class Api::V1::GoalsController < ApplicationController
 	private
 
 	def goal_params
-		params.require(:goal).permit(:title, :description, :published)
+		params.require(:goal).permit(:category, :title, :published, :icon, :frequency, :repetitions, challengers: [:email, :first_name])
 	end
 end

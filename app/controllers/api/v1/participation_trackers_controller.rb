@@ -1,5 +1,5 @@
 class Api::V1::ParticipationTrackersController < ApplicationController
-	before_action :authenticate_with_token!, only: [:create, :update, :destroy]
+	before_action :authenticate_with_token!, only: [:create, :destroy]
 	respond_to :json
 
 	def show
@@ -20,15 +20,6 @@ class Api::V1::ParticipationTrackersController < ApplicationController
 		end
 	end
 
-	def update
-	    participation_tracker = current_user.participation_tracker.find(params[:id])
-	    if participation_tracker.update(participation_tracker_params)
-	      	render json: participation_tracker, status: 200, location: [:api, participation_tracker]
-	    else
-	      	render json: { errors: participation_tracker.errors }, status: 422
-	    end
-  	end
-
   	def destroy
     	participation_tracker = current_user.participation_trackers.find(params[:id])
     	participation_tracker.destroy
@@ -38,6 +29,6 @@ class Api::V1::ParticipationTrackersController < ApplicationController
 	private
 
 	def participation_tracker_params
-		params.require(:participation_tracker).permit(:challenge_id)
+		params.require(:participation_tracker).permit(:goal_id, :user_id)
 	end
 end

@@ -29,6 +29,7 @@ RSpec.configure do |config|
     config.include(Shoulda::Matchers::ActiveRecord, type: :model)
 
     config.fixture_path = "#{::Rails.root}/spec/fixtures"
+    config.render_views = true
     config.use_transactional_fixtures = true
     config.infer_spec_type_from_file_location!
     config.before(:each, type: :controller) do

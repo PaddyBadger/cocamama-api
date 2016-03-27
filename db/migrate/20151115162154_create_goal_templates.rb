@@ -4,6 +4,7 @@ class CreateGoalTemplates < ActiveRecord::Migration
       t.string :title, default: ""
       t.string :description, default: ""
       t.integer :category, default: 0
+      t.boolean :published, default: false
 
       t.timestamps null: false
     end

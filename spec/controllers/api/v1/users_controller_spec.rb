@@ -3,18 +3,16 @@ require 'spec_helper'
 RSpec.describe Api::V1::UsersController do
   	describe "GET #show" do
     	before(:each) do
-      		@user = FactoryGirl.create :user
+      		@user = FactoryGirl.create :user, :with_goals
       		get :show, id: @user.id
     	end
 
     	it "returns the information about a reporter on a hash" do
-      		user_response = json_response
-      		expect(user_response[:user][:email]).to eql @user.email
+      		expect(json_response[:email]).to eql @user.email
     	end
 
     	it "has the goal ids as an embeded object" do
-      		user_response = json_response[:user]
-      		expect(user_response[:goal_ids]).to eql []
+      		expect(json_response[:goal_ids]).to eql @user.goal_ids
     	end
 
     	it { should respond_with 200 }
@@ -29,8 +27,7 @@ RSpec.describe Api::V1::UsersController do
 	      	end
 
 	      	it "renders the json representation for the user record just created" do
-	        	user_response = json_response
-	        	expect(user_response[:user][:email]).to eql @user_attributes[:email]
+	        	expect(json_response[:email]).to eql @user_attributes[:email]
 	      	end
 
 	      	it { should respond_with 201 }
@@ -46,13 +43,11 @@ RSpec.describe Api::V1::UsersController do
       		end
 
 	      	it "renders an errors json" do
-	        	user_response = json_response
-	        	expect(user_response).to have_key(:errors)
+	        	expect(json_response).to have_key(:errors)
 	      	end
 
 	      	it "renders the json errors on why the user could not be created" do
-	        	user_response = json_response
-	        	expect(user_response[:errors][:email]).to include "can't be blank"
+	        	expect(json_response[:errors][:email]).to include "can't be blank"
 	      	end
 
 	      	it { should respond_with 422 }
@@ -71,8 +66,7 @@ RSpec.describe Api::V1::UsersController do
       		end
 
       		it "renders the json representation for the updated user" do
-        		user_response = json_response[:user]
-        		expect(user_response[:email]).to eql "newmail@example.com"
+        		expect(json_response[:email]).to eql "newmail@example.com"
       		end
 
       		it { should respond_with 200 }
@@ -84,13 +78,11 @@ RSpec.describe Api::V1::UsersController do
       		end
 
       		it "renders an errors json" do
-        		user_response = json_response
-        		expect(user_response).to have_key(:errors)
+        		expect(json_response).to have_key(:errors)
       		end
 
       		it "renders the json errors on why the user could not be created" do
-        		user_response = json_response
-        		expect(user_response[:errors][:email]).to include "is invalid"
+        		expect(json_response[:errors][:email]).to include "is invalid"
       		end
 
       		it { should respond_with 422 }

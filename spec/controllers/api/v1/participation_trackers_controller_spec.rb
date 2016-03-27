@@ -9,7 +9,7 @@ describe Api::V1::ParticipationTrackersController do
 
     	it "returns the information about a pt on a hash" do
       		pt_response = json_response
-      		expect(pt_response[:user]).to eql @participation_tracker.user
+      		expect(pt_response[:user_id]).to eql @participation_tracker.user_id
     	end
 
     	it { should respond_with 200 }
@@ -42,7 +42,7 @@ describe Api::V1::ParticipationTrackersController do
     	end
   	end
 
-  	describe ".filter_by_title" do
+  	describe ".find by goal" do
 	    before(:each) do
 	      @goal1 = FactoryGirl.create :goal, title: "Saving Animals"
 	      @pt1 = FactoryGirl.create :participation_tracker, goal: @goal1
@@ -53,15 +53,16 @@ describe Api::V1::ParticipationTrackersController do
 	      @pt4 = FactoryGirl.create :participation_tracker, goal: @goal2
 	      @pt5 = FactoryGirl.create :participation_tracker, goal: @goal2
 	      @pt6 = FactoryGirl.create :participation_tracker, goal: @goal2
+
 	    end
 
-    	context "when a 'Saving' title pattern is sent" do
-      		it "returns the 3 pts for goal matching" do
-        		expect(ParticipationTracker.filter_by_goal("Saving")).to have(3).items
+    	context "goal1" do
+      		it "returns the correct goal" do
+        		expect(@pt1.goal.title).to eq "Saving Animals"
       		end
 
-      		it "returns the 3 pts for goal matching" do
-        		expect(ParticipationTracker.filter_by_goal("Saving").sort).to match_array([@pt1, @pt2, @pt3])
+      		it "can get the other associated pts" do
+        		expect(@pt4.goal.participation_trackers).to match_array([@pt4, @pt5, @pt6])
       		end
     	end
   	end
@@ -69,58 +70,37 @@ describe Api::V1::ParticipationTrackersController do
   	describe "POST #create" do
     	context "when is successfully created" do
       		before(:each) do
-        		@goal = FactoryGirl.create :goal, user: user
+            goal_user = FactoryGirl.create :user
+            api_authorization_header goal_user.auth_token 
 
-        		user = FactoryGirl.create :user
-        		api_authorization_header user.auth_token 
-        		@pt1_attributes = FactoryGirl.attributes_for :participation_tracker
+        		goal = FactoryGirl.create :goal, user: goal_user
 
-        		post :create, { goal: @goal, user_id: user.id, participation_tracker: @pt1_attributes}
+            participation_user = FactoryGirl.create :user
+            api_authorization_header participation_user.auth_token 
+
+        		@pt1_attributes = { goal_id: goal.id, user_id: participation_user.id }
+
+        		post :create, { participation_tracker: @pt1_attributes}
       		end
 
       		it "renders the json representation for the goal record just created" do
-        		goal_response = json_response[:participation_tracker]
-        		expect(goal_response[:user_id]).to eql @pt1_attributes[:user_id]
+        		expect(json_response[:user_id]).to eql @pt1_attributes[:user_id]
       		end
 
       		it { should respond_with 201 }
     	end
   	end
 
-  describe "PUT/PATCH #update" do
-    	before(:each) do
-      		@user = FactoryGirl.create :user
-      		@goal = FactoryGirl.create :goal, user: @user
-      		api_authorization_header @user.auth_token 
-    	end
-
-    	context "when is successfully updated" do
-      		before(:each) do
-        		patch :update, { user_id: @user.id, id: @goal.id, goal: { title: "Vegitarianism" } }
-      		end
-
-      		it "renders the json representation for the updated user" do
-        		goal_response = json_response[:goal]
-        		expect(goal_response[:title]).to eql "Vegitarianism"
-      		end
-
-      		it { should respond_with 200 }
-    	end
-  	end
-
   	describe "GET #index" do
-    	before(:each) do
-      		4.times { FactoryGirl.create :goal } 
-    	end
-
-    	context "when is not receiving any goal_ids parameter" do
+    	context "when is not receiving any ids parameter" do
       		before(:each) do
-        		get :index
+            4.times { FactoryGirl.create :participation_tracker } 
+            get :index
       		end
 
       		it "returns 4 records from the database" do
-        		goals_response = json_response
-        		expect(goals_response[:goals]).to have(4).items
+        		response = json_response
+        		expect(response[:participation_trackers]).to have(4).items
       		end
 
       		it { should respond_with 200 }
@@ -128,19 +108,48 @@ describe Api::V1::ParticipationTrackersController do
 
     	context "when goal_ids parameter is sent" do
       		before(:each) do
-        		@user = FactoryGirl.create :user
-        		3.times { FactoryGirl.create :goal, user: @user }
-        		get :index, goal_ids: @user.goal_ids
+        		user = FactoryGirl.create :user
+            goal = FactoryGirl.create :goal, user: user
+
+            participation_user = FactoryGirl.create :user
+
+            4.times { FactoryGirl.create :participation_tracker, goal: goal, user_id: participation_user.id }
+
+            get :index, goal_ids: goal.id
       		end
+
+          it "returns 4 records matching goal_id" do
+              expect(json_response[:participation_trackers]).to have(4).items
+            end
     	end
+
+      context "when user_id parameter is sent" do
+        before(:each) do
+            user = FactoryGirl.create :user
+            goal = FactoryGirl.create :goal, user: user
+            goal2 = FactoryGirl.create :goal, user: user
+
+            participation_user = FactoryGirl.create :user
+
+            2.times { FactoryGirl.create :participation_tracker, goal: goal, user_id: participation_user.id }
+            2.times { FactoryGirl.create :participation_tracker, goal: goal2, user_id: participation_user.id }
+            get :index, user_ids: participation_user.id
+
+            it "returns 4 records matching user_id" do
+              expect(json_response[:participation_trackers]).to have(4).items
+            end
+          end
+      end
     end
 
   	describe "DELETE #destroy" do
     	before(:each) do
       		@user = FactoryGirl.create :user
       		@goal = FactoryGirl.create :goal, user: @user
+          @participation_tracker = FactoryGirl.create :participation_tracker, goal: @goal, user_id: @user.id
+
       		api_authorization_header @user.auth_token 
-      		delete :destroy, { user_id: @user.id, id: @goal.id }
+      		delete :destroy, { user_id: @user.id, id: @participation_tracker.id }
     	end
 
     	it { should respond_with 204 }
