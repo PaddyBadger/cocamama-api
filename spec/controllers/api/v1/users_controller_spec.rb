@@ -27,6 +27,7 @@ RSpec.describe Api::V1::UsersController do
 	      	end
 
 	      	it "renders the json representation for the user record just created" do
+            binding.pry†
 	        	expect(json_response[:email]).to eql @user_attributes[:email]
 	      	end
 
