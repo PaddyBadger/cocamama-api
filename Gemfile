@@ -36,9 +36,7 @@ gem 'coffee-rails', '~> 4.0.0'
 gem 'jquery-rails'
 
 #Api gems
-gem 'jbuilder', '~> 2.0'
 gem 'active_model_serializers'
-
 gem 'devise'
 gem 'pg'
 
@@ -47,6 +45,7 @@ gem 'furatto', github: "IcaliaLabs/furatto-rails"
 gem 'compass-rails', '~> 2.0.4'
 gem 'font-awesome-rails'
 gem 'simple_form'
+gem 'jbuilder', '~> 2.0'
 
 group :doc do
 	# bundle exec rake doc:rails generates the API under doc/api.

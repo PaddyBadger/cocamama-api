@@ -72,11 +72,10 @@ RSpec.describe Api::V1::GoalsController do
       		end
 
       		it "renders the json representation for the goal record just created" do
-        		goal_response = json_response[:goal]
-        		expect(goal_response[:title]).to eql @goal_attributes[:title]
+        		expect(json_response[:title]).to eql @goal_attributes[:title]
       		end
 
-      		it { should respond_with 201 }
+      		it { should respond_with 200 }
     	end
   	end
 

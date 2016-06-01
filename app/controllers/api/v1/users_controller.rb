@@ -1,9 +1,11 @@
 class Api::V1::UsersController < ApplicationController
-  	before_action :authenticate_with_token!, only: [:update, :destroy]
-  	respond_to :json
+	respond_to :json
+  	before_action :authenticate_with_token!, only: [:update, :destroy, :show]
+
 
 	def show
 		@user = User.find(params[:id]) 
+		render 'show', formats: [:json], handlers: [:jbuilder], status: 200
 	end
 
 	def create

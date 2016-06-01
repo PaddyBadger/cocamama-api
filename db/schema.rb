@@ -11,10 +11,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160217125349) do
+ActiveRecord::Schema.define(version: 20160510123552) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "challengers", force: :cascade do |t|
+    t.string   "name",               default: ""
+    t.string   "email",              default: "", null: false
+    t.boolean  "challenge_accepted"
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+    t.integer  "goal_id"
+  end
+
+  add_index "challengers", ["goal_id"], name: "index_challengers_on_goal_id", using: :btree
 
   create_table "goal_templates", force: :cascade do |t|
     t.string   "title",       default: ""
@@ -58,6 +69,7 @@ ActiveRecord::Schema.define(version: 20160217125349) do
   end
 
   add_index "participation_trackers", ["goal_id"], name: "index_participation_trackers_on_goal_id", using: :btree
+  add_index "participation_trackers", ["user_id"], name: "index_participation_trackers_on_user_id", using: :btree
 
   create_table "steps", force: :cascade do |t|
     t.datetime "day"

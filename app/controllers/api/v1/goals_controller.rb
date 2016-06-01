@@ -14,7 +14,7 @@ class Api::V1::GoalsController < ApplicationController
 	def create
 		goal = current_user.goals.build(goal_params)
 		if goal.save
-			render json: goal, status: 201, location: [:api, goal]
+			render json: goal, status: 201
 		else
 			render json: { errors: goal.errors }, status: 422
 		end
@@ -38,6 +38,6 @@ class Api::V1::GoalsController < ApplicationController
 	private
 
 	def goal_params
-		params.require(:goal).permit(:category, :title, :published, :icon, :frequency, :repetitions, challengers: [:email, :first_name])
+		params.require(:goal).permit(:category, :title, :description, :icon, :frequency, :count, :start_at, :end_at, challengers_attributes: [:email, :name])
 	end
 end

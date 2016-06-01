@@ -3,11 +3,15 @@ require 'spec_helper'
 RSpec.describe Api::V1::UsersController do
   	describe "GET #show" do
     	before(:each) do
-      		@user = FactoryGirl.create :user, :with_goals
+      		@user = FactoryGirl.create :user
+          5.times { FactoryGirl.create :goal, user: @user }
+
+          api_authorization_header @user.auth_token 
       		get :show, id: @user.id
     	end
 
     	it "returns the information about a reporter on a hash" do
+          binding.pry
       		expect(json_response[:email]).to eql @user.email
     	end
 
@@ -27,7 +31,6 @@ RSpec.describe Api::V1::UsersController do
 	      	end
 
 	      	it "renders the json representation for the user record just created" do
-            binding.pry†
 	        	expect(json_response[:email]).to eql @user_attributes[:email]
 	      	end
 

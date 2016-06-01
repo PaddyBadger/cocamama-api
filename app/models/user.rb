@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
 
 	before_create :generate_authentication_token!
 	has_many :goals, dependent: :destroy
-	has_many :participation_trackers, through: :goals
+	has_many :participation_trackers
 	has_many :steps, through: :participation_trackers
 
 	def generate_authentication_token!	

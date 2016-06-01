@@ -3,4 +3,8 @@ json.(@user,
 	:email,
 	:name 
 )
-json.goal_ids @user.goal_ids
+json.participation_trackers @user.participation_trackers do |tracker|
+	json.goal tracker.tracker_goal
+	json.tracker tracker
+	json.tracker_steps tracker.steps
+end
